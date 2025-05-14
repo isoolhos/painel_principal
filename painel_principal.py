@@ -1,60 +1,73 @@
 import streamlit as st
 from datetime import datetime
 
-# ========== CONFIGURAÇÃO BÁSICA DO PAINEL ==========
+# ========== CONFIGURAÇÃO ========== #
 st.set_page_config(page_title="Central de Dashboards", layout="wide")
 
-# ========== ESTILO PERSONALIZADO ==========
+# ========== USUÁRIO E SENHA ========== #
+USER_CREDENTIALS = {
+    "admin": "iso300",
+    "diretoria": "diretoria@2025",
+    "centrodiagnostico": "cd@2025",
+    "gestao": "gestao@2025"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def login():
+    st.markdown("## 🔐 Autentique-se para acessar os painéis de desempenho e indicadores.")
+    username = st.text_input("Usuário")
+    password = st.text_input("Senha", type="password")
+    if st.button("Entrar"):
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("Usuário ou senha incorretos.")
+
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+# ========== ESTILO PERSONALIZADO ========== #
 st.markdown("""
     <style>
-    /* Fonte e fundo */
     body, .stApp {
         background-color: #f5f7fa;
         font-family: 'Segoe UI', sans-serif;
     }
-
-    /* Cabeçalho com logo e data */
     .header-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 10px;
     }
-
     .logo-container img {
         height: 80px;
         margin-bottom: 30px;
     }
-
     .data-container {
         font-size: 18px;
         font-weight: 600;
         color: #333;
     }
-
-    /* Título principal */
     .titulo {
         font-size: 40px;
         font-weight: 800;
         color: #0A5272;
         margin-bottom: 10px;
     }
-
-    /* Markdown */
     .markdown-section {
         background-color: #ffffff;
         padding: 20px;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
-
-    .sidebar .css-1d391kg {
-        background-color: #eaf4fc;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# ========== CABEÇALHO COM LOGO E DATA ==========
+# ========== CABEÇALHO ========== #
 st.markdown(f"""
     <div class="header-container">
         <div class="logo-container">
@@ -66,17 +79,15 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-
-# ========== MENU LATERAL ==========
+# ========== MENU LATERAL ========== #
 opcao = st.sidebar.selectbox(
     "📂 Escolha o painel",
     ["🏠 Home", "🏥 Centro Diagnóstico", "💻 Senhas Pendentes", "📦 Ordem de Compras", "🩺 Acompanhamento de Consultas"]
 )
 
-# ========== NAVEGAÇÃO ==========
+# ========== CONTEÚDO PRINCIPAL ========== #
 if opcao == "🏠 Home":
     st.markdown('<div class="titulo">📊 Central de Dashboards</div>', unsafe_allow_html=True)
-
     st.markdown("""
     <div class="markdown-section">
         <p>Bem-vindo à <strong>Central de Dashboards</strong>!</p>
