@@ -2,7 +2,11 @@ import streamlit as st
 from datetime import datetime
 
 # ========== CONFIGURAÇÃO ========== #
-st.set_page_config(page_title="Central de Dashboards", layout="wide")
+st.set_page_config(
+    page_title="Central de Dashboards",
+    page_icon="favicon.ico",  
+    layout="wide"
+)
 
 # ========== USUÁRIO E SENHA ========== #
 USER_CREDENTIALS = {
